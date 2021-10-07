@@ -13,7 +13,7 @@ import rpy2.robjects.numpy2ri
 rpy2.robjects.numpy2ri.activate()
 
 robjects.r('''
-    source("/home/jiajinn/test_code/BayesFGM/sim_data_pca.R")
+    source("./sim_data_pca.R")
     '''
     )
 
