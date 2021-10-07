@@ -1,19 +1,19 @@
 import os
 import sys
-BASE_DIR = '/home/jiajinn/test_code/BayesFGM'
-sys.path.append(BASE_DIR)
-sys.path.append(os.path.join(BASE_DIR, '/Bayesmodel'))
+# BASE_DIR = '/home/jiajinn/test_code/BayesFGM'
+# sys.path.append(BASE_DIR)
+# sys.path.append(os.path.join(BASE_DIR, '/Bayesmodel'))
 
 from argparse import ArgumentParser, FileType, ArgumentDefaultsHelpFormatter
 
-import BayesModel
+from Bayesmodel import BayesModel
 import numpy as np
 import rpy2.robjects as robjects
 import rpy2.robjects.numpy2ri
 rpy2.robjects.numpy2ri.activate()
 
 robjects.r('''
-    source("/home/jiajinn/test_code/BayesFGM/simulation/sim_data_pca.R")
+    source("/home/jiajinn/test_code/BayesFGM/sim_data_pca.R")
     '''
     )
 
@@ -24,9 +24,9 @@ r_pace_sparse_fun = robjects.globalenv['pace_sparse_fun']
 def run(p, Net_num, prior, N, data_type):
 
     if data_type == "sparse":
-      data_r = r_pace_sparse_fun(p, N, Net_num)
+        data_r = r_pace_sparse_fun(p, N, Net_num)
     if data_type == "dense":
-      data_r = r_SVD_dense_fun(p, N, Net_num)  
+        data_r = r_SVD_dense_fun(p, N, Net_num)  
 
     y = np.array(data_r[0])
 
@@ -42,9 +42,9 @@ def run(p, Net_num, prior, N, data_type):
             lambda_shape = 13000
 
         samples, _ = BayesModel.Bayes_fglasso(data = y, p = p, lambda_shape = lambda_shape, nBurnin = nBurnin, nIter = nIter)
-		
+        
     if prior == "horse":
-		
+        
         samples, _ = BayesModel.Bayes_fghorse(data = y, p = p, nBurnin = nBurnin, nIter = nIter)
 
     folder = '/scratch1/jiajinn/tab2/fg{}/p_{}/'.format(prior, p)
@@ -73,4 +73,4 @@ def main():
 
 
 if __name__ == "__main__":
-  sys.exit(main())
+    sys.exit(main())

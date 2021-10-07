@@ -1,3 +1,4 @@
+library(statmod)
 
 Bayesfglasso = function(
   data,
@@ -55,10 +56,11 @@ Bayesfglasso = function(
   # sample covariance/correlation matrix:
   S = t(data) %*% data
   # Use glasso with some lambda to get initial values:
-  glassoRes = glasso::glasso(S, rho=0.3)
+#   glassoRes = glasso::glasso(S, rho=0.3)
 
   # Starting values:
-  Theta = glassoRes$wi
+#   Theta = glassoRes$wi
+  Theta = diag(p*M)
   
   #blockwise Frobunius norm for precision matrix
   Theta_F = F_norm(Theta, p, M)
@@ -256,11 +258,13 @@ Bayesfghorse = function(
   # S = cor(data)
   
   # Use glasso with some lambda to get starting values:
-  glassoRes = glasso::glasso(cov(data,use="pairwise.complete.obs"),rho=0.3)
+#   glassoRes = glasso::glasso(cov(data,use="pairwise.complete.obs"),rho=0.3)
   
   # Starting values:
   # Inverse:
-  Theta = glassoRes$wi
+#   Theta = glassoRes$wi
+  # or use identity as initial
+  Theta = diag(p*M)
   
   #blockwise Frobunius norm for precision matrix
   Theta_F = F_norm(Theta, p, M)
@@ -385,3 +389,10 @@ Bayesfghorse = function(
   if (verbose) close(pb)
   return(Results)
 }
+
+
+
+### example
+# p = 10 ## number of nodes
+# y = SVD_dense_fun(10,1000, 1)$a_hat ## pca scores of data
+# res = Bayesfghorse(y,p)
