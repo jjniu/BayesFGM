@@ -6,7 +6,7 @@
 - R version 3.6.3 and up
 - Python 3.6 and up
 - TensorFlow 2.6.0
-- tensorflow-probability 0.14.1
+- Tensorflow-probability 0.14.1
 
 # Basic Example
 
