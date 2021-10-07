@@ -1,8 +1,5 @@
 import os
 import sys
-# BASE_DIR = '/home/jiajinn/test_code/BayesFGM'
-# sys.path.append(BASE_DIR)
-# sys.path.append(os.path.join(BASE_DIR, '/Bayesmodel'))
 
 from argparse import ArgumentParser, FileType, ArgumentDefaultsHelpFormatter
 
@@ -10,6 +7,7 @@ from Bayesmodel import BayesModel
 import numpy as np
 import rpy2.robjects as robjects
 import rpy2.robjects.numpy2ri
+
 rpy2.robjects.numpy2ri.activate()
 
 robjects.r('''
@@ -35,7 +33,7 @@ def run(p, Net_num, prior, N, data_type):
 
     if prior == "lasso":
         if p == 10:
-            lambda_shape = 900 ##pre-tuned parameter 
+            lambda_shape = 900 ## pre-tuned parameter 
         if p == 30:
             lambda_shape = 6000
         if p == 50:
@@ -47,8 +45,7 @@ def run(p, Net_num, prior, N, data_type):
         
         samples, _ = BayesModel.Bayes_fghorse(data = y, p = p, nBurnin = nBurnin, nIter = nIter)
 
-    folder = '/scratch1/jiajinn/tab2/fg{}/p_{}/'.format(prior, p)
-    filename = folder + 'Bayes_fg{}_samples_Net_{}_p_{}_N_{}_{}_exp_{}.npy'.format(prior, Net_num, p, N, data_type, ee)
+    filename = './Bayes_fg{}_samples_Net_{}_p_{}_N_{}_{}.npy'.format(prior, Net_num, p, N, data_type)
     np.save(filename, samples)
 
 def main():
